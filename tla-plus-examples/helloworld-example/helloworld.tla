@@ -4,6 +4,8 @@ VARIABLE computingstates
 
 TypeOK == computingstates \in {"computing", "idle", "bufferring"}
 
+AlwaysTypeOK == [] TypeOK
+
 Init == computingstates = "idle"
 
 StartBuffering == 
@@ -19,5 +21,7 @@ EndProcessing ==
     /\ computingstates' = "idle"
 
 Next == StartBuffering \/ StartProcessing \/ EndProcessing
+
+Spec == Init /\ [][Next]_computingstates
 
 =============================================================================
