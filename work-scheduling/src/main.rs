@@ -24,7 +24,7 @@ fn fib_rec(n: usize) -> usize {
 }
 
 fn main() {
-    const FIBONACCI_N: usize = 10;
+    const FIBONACCI_N: usize = 45;
 
     let start = std::time::Instant::now();
     let result = fib_rec(FIBONACCI_N);
