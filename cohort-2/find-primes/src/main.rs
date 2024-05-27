@@ -1,6 +1,7 @@
-use std::thread;
+use std::{thread, time};
 
 fn find_primes(end:u64) {
+    let start = time::Instant::now();
     let mut primes = Vec::new();
     for num in 2..end {
         let mut is_prime = true;
@@ -14,14 +15,15 @@ fn find_primes(end:u64) {
             primes.push(num);
         }
     }
-    println!("Found {} primes", primes.len());
+    let duration = start.elapsed();
+    println!("Found {} primes, {} secs.", primes.len(), duration.as_secs());
 }
 
 fn run_in_batches() {
     let mut handles = Vec::new();
     for _ in 0..10 {
         let handle = thread::spawn(|| {
-            find_primes(100000);
+            find_primes(1000000);
         });
         handles.push(handle);
     }
@@ -31,6 +33,6 @@ fn run_in_batches() {
 }
 
 fn main() {
-    println!("Hello, world!");
+    println!("Starting...");
     run_in_batches();
 }

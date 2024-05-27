@@ -1,4 +1,5 @@
 use std::{sync::{Arc, Mutex}, thread};
+use rayon::prelude::*;
 
 fn sum_sequential(nums: Vec<usize>) -> usize {
     let mut sum = 0;
@@ -11,11 +12,11 @@ fn sum_sequential(nums: Vec<usize>) -> usize {
 }
 
 fn cpu_count() -> usize {
-    12
+    1024
 }
 
 fn sum_parallel(nums: Vec<usize>) -> usize {
-    let sum = Arc::new(Mutex::new(0));
+    let sum: Arc<Mutex<usize>> = Arc::new(Mutex::new(0));
     let mut handles = vec![];
     let chunk_size = nums.len() / cpu_count();
 
@@ -42,24 +43,41 @@ fn sum_parallel(nums: Vec<usize>) -> usize {
     *final_sum
 }
 
+fn sum_parallel_rayon (nums: Vec<usize>) -> usize {
+    nums.par_iter().sum()
+}     
+
 
 fn main() {
     println!("Hello, world!");
 
-    let nums: Vec<usize> = (0..1000000000).collect();
+    let nums: Vec<usize> = (0..1000000000).collect(); //10^8
+
+    // // time it
+    // let start = std::time::Instant::now();
+    // let sum_seq = sum_sequential(nums.clone());
+    // let duration = start.elapsed();
+
+    // println!("Sequential sum: {}, Duration: {} secs", sum_seq, duration.as_secs_f32());
+
+    //sleep for 1 sec
+    // std::thread::sleep(std::time::Duration::from_secs(1));
+
+    // // time it
+    // let start = std::time::Instant::now();
+    // let sum_par = sum_parallel(nums.clone());
+    // let duration = start.elapsed();
+
+    // println!("Parallel sum: {}, Duration: {} secs", sum_par, duration.as_secs_f32());
+
+    //sleep for 1 sec
+    // std::thread::sleep(std::time::Duration::from_secs(1));
 
     // time it
     let start = std::time::Instant::now();
-    let sum_seq = sum_sequential(nums.clone());
+    let sum_par_rayon = sum_parallel_rayon(nums);
     let duration = start.elapsed();
 
-    println!("Sequential sum: {}, Duration: {} secs", sum_seq, duration.as_secs_f32());
-
-    // time it
-    let start = std::time::Instant::now();
-    let sum_par = sum_parallel(nums);
-    let duration = start.elapsed();
-
-    println!("Parallel sum: {}, Duration: {} secs", sum_par, duration.as_secs_f32());
+    println!("Parallel sum rayon: {}, Duration: {} secs", sum_par_rayon, duration.as_secs_f32());
 
 }

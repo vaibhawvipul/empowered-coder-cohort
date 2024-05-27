@@ -22,7 +22,6 @@ fn main() {
             // Simulate some work
             let work_duration = std::time::Duration::from_secs(i as u64);
             thread::sleep(work_duration);
-
             // Lock the mutex and access the shared data
             let mut data = shared_data_clone.lock().unwrap();
             *data += 1;
