@@ -87,6 +87,6 @@ fn non_blocking_counter() {
 
 fn main() {
     blocking_counter(); // check the execution time where 1000 thread, each thread increment the counter 100000 times
-    non_blocking_counter_ordering_strong();
-    //non_blocking_counter();
+    // non_blocking_counter_ordering_strong();
+    // non_blocking_counter();
 }
